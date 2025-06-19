@@ -1,0 +1,6 @@
+@TeachingPlatform.Back_HostAddress = http://localhost:5229
+
+GET {{TeachingPlatform.Back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
