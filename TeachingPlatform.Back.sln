@@ -3,28 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeachingPlatform.Back", "TeachingPlatform.Back\TeachingPlatform.Back.csproj", "{ADB7627C-7519-469B-AE85-3CB199D9EF3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeachingPlatform.Back", "TeachingPlatform.Back\TeachingPlatform.Back.csproj", "{ADB7627C-7519-469B-AE85-3CB199D9EF3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Feature", "Services\Services.Feature.csproj", "{D232D646-B493-4D73-BBD1-1B08BB1F8B10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Feature", "Services\Services.Feature.csproj", "{D232D646-B493-4D73-BBD1-1B08BB1F8B10}"
 	ProjectSection(ProjectDependencies) = postProject
 		{60189F63-4FD7-4850-9DD5-7C2D43C63D29} = {60189F63-4FD7-4850-9DD5-7C2D43C63D29}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entites", "Entites\Entites.csproj", "{DBD1A05A-C124-4387-AFFF-1A9211E73B81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entites\Entities.csproj", "{DBD1A05A-C124-4387-AFFF-1A9211E73B81}"
 	ProjectSection(ProjectDependencies) = postProject
 		{60189F63-4FD7-4850-9DD5-7C2D43C63D29} = {60189F63-4FD7-4850-9DD5-7C2D43C63D29}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applications", "Applications\Applications.csproj", "{60189F63-4FD7-4850-9DD5-7C2D43C63D29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Applications", "Applications\Applications.csproj", "{60189F63-4FD7-4850-9DD5-7C2D43C63D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFPersistence", "EFPersistence\EFPersistence.csproj", "{0A8CB3B7-C370-45FF-8629-8617320BFD5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFPersistence", "EFPersistence\EFPersistence.csproj", "{0A8CB3B7-C370-45FF-8629-8617320BFD5E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{60189F63-4FD7-4850-9DD5-7C2D43C63D29} = {60189F63-4FD7-4850-9DD5-7C2D43C63D29}
 		{D232D646-B493-4D73-BBD1-1B08BB1F8B10} = {D232D646-B493-4D73-BBD1-1B08BB1F8B10}
 		{DBD1A05A-C124-4387-AFFF-1A9211E73B81} = {DBD1A05A-C124-4387-AFFF-1A9211E73B81}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Infrastructure", "Services.Infrastructure\Services.Infrastructure.csproj", "{3C4CBFB6-674F-432E-87AC-63CF86973C76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Infrastructure", "Services.Infrastructure\Services.Infrastructure.csproj", "{3C4CBFB6-674F-432E-87AC-63CF86973C76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
