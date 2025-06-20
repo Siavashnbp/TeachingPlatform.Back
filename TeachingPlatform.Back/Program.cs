@@ -1,7 +1,11 @@
 using EFPersistence;
 using Entities.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using TeachingPlatform.Back.Configs.Identities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,24 @@ builder.Services.AddDbContext<EFDataContext>(options =>
     x => x.MigrationsAssembly(typeof(EFDataContext).Assembly.FullName)));
 builder.Services.AddScoped(_ => new EFWriteDataContext(writeConnectionString));
 builder.Services.AddScoped(_ => new EFWriteDataContext(readConnectionString));
+
+var jwtSettings = new JwtSetting();
+builder.Configuration.GetSection("Jwt").Bind(jwtSettings);
+var key = Encoding.UTF8.GetBytes(jwtSettings.Key);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -39,11 +61,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<EFDataContext>()
     .AddDefaultTokenProviders();
-//builder.Services.AddDbContext<EFWriteDataContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("WriteConnectionString"),
-//    x => x.MigrationsAssembly(typeof(EFDataContext).Assembly.FullName)));
-//builder.Services.AddDbContext<EFReadDataContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("ReadConnectionString")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeachingPlatform.Back", "TeachingPlatform.Back\TeachingPlatform.Back.csproj", "{ADB7627C-7519-469B-AE85-3CB199D9EF3A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3C4CBFB6-674F-432E-87AC-63CF86973C76} = {3C4CBFB6-674F-432E-87AC-63CF86973C76}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Feature", "Services\Services.Feature.csproj", "{D232D646-B493-4D73-BBD1-1B08BB1F8B10}"
 	ProjectSection(ProjectDependencies) = postProject
