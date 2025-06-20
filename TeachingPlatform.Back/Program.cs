@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TeachingPlatform.Back.Configs.Identities;
+using TeachingPlatform.Back.Configs.Identities.Jwt;
+using TeachingPlatform.Back.Configs.Identities.Jwt.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,7 +64,15 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     .AddEntityFrameworkStores<EFDataContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IJwtTokenGenerator,JwtTokenGenerator>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await SeedRoles.SeedRolesAsync(roleManager);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

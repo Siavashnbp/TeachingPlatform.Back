@@ -13,7 +13,7 @@ namespace Services.Infrastructure.Identity.Contracts.Dtos
         public string FirstName { get; set; }
         [Required, MaxLength(50)]
         public string LastName { get; set; }
-        [Required, MaxLength(50)]
+        [Required]
         public Phone Phone { get; set; }
     }
 }

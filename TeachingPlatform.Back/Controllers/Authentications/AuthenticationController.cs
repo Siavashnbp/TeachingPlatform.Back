@@ -1,4 +1,5 @@
-﻿using Entities.Users;
+﻿using Applications.Interfaces;
+using Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.Infrastructure.Identity.Contracts.Dtos;
@@ -8,10 +9,11 @@ namespace TeachingPlatform.Back.Controllers.Authentications
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthenticationControllerr(
+    public class AuthenticationController(
         IJwtTokenGenerator jwtGenerator,
         UserManager<User> userManager,
-        SignInManager<User> signInManager) : ControllerBase
+        SignInManager<User> signInManager,
+        IUnitOfWork unitOfWork) : ControllerBase
     {
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto request)
@@ -30,24 +32,44 @@ namespace TeachingPlatform.Back.Controllers.Authentications
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto request)
         {
-            var user = await userManager.FindByEmailAsync(request.Email);
-            if (user is not null)
+            await unitOfWork.BeginTransaction();
+            try
             {
-                return BadRequest("Email is already registered");
+                var user = await userManager.FindByEmailAsync(request.Email);
+                if (user is not null)
+                {
+                    return BadRequest("Email is already registered");
+                }
+                user = new User
+                {
+                    Email = request.Email,
+                    UserName = request.Email,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Phone = request.Phone,
+                };
+                var userCreationResult = await userManager.CreateAsync(user, request.Password);
+                var roleCreationResult = await userManager.AddToRoleAsync(user, "Student");
+
+                if (!userCreationResult.Succeeded)
+                {
+                    await unitOfWork.RollBackTransaction();
+                    return BadRequest(userCreationResult.Errors);
+                }
+                if (!roleCreationResult.Succeeded)
+                {
+                    await unitOfWork.RollBackTransaction();
+                    return BadRequest(roleCreationResult.Errors);
+                }
+                await unitOfWork.CommitTransaction();
+                return Ok("User registered successfully.");
             }
-            user = new User
+            catch (Exception exception)
             {
-                Email = request.Email,
-                UserName = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Phone = request.Phone,
-            };
-            var result = await userManager.CreateAsync(user, request.Password);
-            await userManager.AddToRoleAsync(user, "Student");
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-            return Ok("User registered successfully.");
+                await unitOfWork.RollBackTransaction();
+                return StatusCode(500, exception.Message);
+            }
+
         }
     }
 }
