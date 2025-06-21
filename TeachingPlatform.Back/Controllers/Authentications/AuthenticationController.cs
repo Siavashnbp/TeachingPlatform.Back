@@ -26,7 +26,7 @@ namespace TeachingPlatform.Back.Controllers.Authentications
 
             var roles = await userManager.GetRolesAsync(user);
             var token = jwtGenerator.Generate(user.Id, roles[0]);
-
+            Request.HttpContext.Session.SetString("token", token);
             return Ok(new { Token = token });
         }
         [HttpPost("register")]
@@ -46,7 +46,8 @@ namespace TeachingPlatform.Back.Controllers.Authentications
                     UserName = request.Email,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    Phone = request.Phone,
+                    CountryCallingCode = request.Phone.CountryCallingCode,
+                    PhoneNumber = request.Phone.PhoneNumber,
                 };
                 var userCreationResult = await userManager.CreateAsync(user, request.Password);
                 var roleCreationResult = await userManager.AddToRoleAsync(user, "Student");

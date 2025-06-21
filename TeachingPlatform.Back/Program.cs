@@ -2,31 +2,55 @@ using EFPersistence;
 using Entities.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
+using TeachingPlatform.Back.Configs.EFCore;
 using TeachingPlatform.Back.Configs.Identities;
-using TeachingPlatform.Back.Configs.Identities.Jwt;
-using TeachingPlatform.Back.Configs.Identities.Jwt.Contracts;
+using TeachingPlatform.Back.Configs.Services;
+using TeachingPlatform.Back.Configs.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services
+    .RegisterInfrastructureServices()
+    .RegisterFeatureQueries();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-var writeConnectionString = builder.Configuration.GetConnectionString("WriteConnectionString")
-    ?? throw new InvalidOperationException();
-var readConnectionString = builder.Configuration.GetConnectionString("ReadConnectionString")
-    ?? throw new InvalidOperationException();
 
-builder.Services.AddDbContext<EFDataContext>(options =>
-    options.UseSqlServer(writeConnectionString,
-    x => x.MigrationsAssembly(typeof(EFDataContext).Assembly.FullName)));
-builder.Services.AddScoped(_ => new EFWriteDataContext(writeConnectionString));
-builder.Services.AddScoped(_ => new EFWriteDataContext(readConnectionString));
+builder.Services.AddSwaggerGen(options =>
+{
+    options.OperationFilter<TenantIdHeaderParameter>();
+    options.AddSecurityDefinition(
+                    "Bearer", new OpenApiSecurityScheme()
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.ApiKey,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "Example: \"Bearer token\"",
+                    });
+    options.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] { }
+                        }
+        });
+});
+builder.Services.AddEFCore(builder.Configuration);
 
 var jwtSettings = new JwtSetting();
 builder.Configuration.GetSection("Jwt").Bind(jwtSettings);
@@ -64,7 +88,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     .AddEntityFrameworkStores<EFDataContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IJwtTokenGenerator,JwtTokenGenerator>();
 
 var app = builder.Build();
 
@@ -80,7 +103,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

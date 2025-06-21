@@ -9,11 +9,6 @@ namespace EFPersistence.Users
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");
-            builder.OwnsOne(user => user.Phone, phone=>
-            {
-                phone.Property(_ => _.CountryCallingCode).HasColumnName("CountryCallingCode");
-                phone.Property(_ => _.PhoneNumber).HasColumnName("PhoneNumber");
-            });
         }
     }
 }

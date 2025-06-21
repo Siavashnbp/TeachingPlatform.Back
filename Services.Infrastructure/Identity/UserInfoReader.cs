@@ -6,16 +6,16 @@ namespace Services.Infrastructure.Identity
 {
     public class UserInfoReader(IHttpContextAccessor httpContextAccessor) : IUserInfoReader
     {
-        public string? TenantID =>
-            httpContextAccessor.HttpContext.Request.Headers
+        public string? TenantId =>
+            httpContextAccessor?.HttpContext?.Request?.Headers?
             .FirstOrDefault(header=> header.Key.ToLower() =="tenantid").Value;
 
-        public string? UserID =>
-            httpContextAccessor.HttpContext.User.Claims
+        public string? UserId =>
+            httpContextAccessor?.HttpContext?.User?.Claims?
             .FirstOrDefault(claim=> claim.Type == ClaimTypes.NameIdentifier)?.Value;
 
         public string? UserName => 
-            httpContextAccessor.HttpContext.User.Claims
+            httpContextAccessor?.HttpContext?.User?.Claims?
             .FirstOrDefault(claim => claim.Type == "preferred_username")?.Value;
     }
 }

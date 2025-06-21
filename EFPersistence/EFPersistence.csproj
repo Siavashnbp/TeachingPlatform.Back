@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Applications\Applications.csproj" />
     <ProjectReference Include="..\Entites\Entities.csproj" />
+    <ProjectReference Include="..\Services\Services.Feature.csproj" />
   </ItemGroup>
 
 </Project>

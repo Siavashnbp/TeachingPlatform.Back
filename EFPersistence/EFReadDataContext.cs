@@ -1,13 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Applications.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EFPersistence
 {
     public class EFReadDataContext : EFDataContext
     {
-        public EFReadDataContext(DbContextOptions<EFDataContext> options)
-            : base(options)
+        public EFReadDataContext(string connectionString, IUserInfoReader userInfoReader)
+            : base(new DbContextOptionsBuilder<EFDataContext>()
+                    .UseSqlServer(connectionString).Options,
+                  userInfoReader)
         {
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

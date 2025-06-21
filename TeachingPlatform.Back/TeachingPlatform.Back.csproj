@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EFPersistence\EFPersistence.csproj" />
     <ProjectReference Include="..\Services.Infrastructure\Services.Infrastructure.csproj" />
+    <ProjectReference Include="..\Services\Services.Feature.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,20 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Applications.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFPersistence
 {
     public class EFWriteDataContext : EFDataContext
     {
-        public EFWriteDataContext(string connectionString)
+        public EFWriteDataContext(string connectionString,
+            IUserInfoReader userInfoReader)
             : base(new DbContextOptionsBuilder<EFDataContext>()
-                    .UseSqlServer(connectionString).Options)
+                    .UseSqlServer(connectionString).Options,
+                  userInfoReader)
         {
 
         }
-        //public EFWriteDataContext(string connectionString)
-        //    :this (new DbContextOptionsBuilder<EFDataContext>()
-        //         .UseSqlServer(connectionString).Options)
-        //{
-
-        //}
     }
 }

@@ -7,6 +7,6 @@ namespace Entities.Users
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Phone Phone { get; set; }
+        public string CountryCallingCode { get; set; }
     }
 }

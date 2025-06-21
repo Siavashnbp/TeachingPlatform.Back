@@ -2,6 +2,6 @@
 {
     public interface ITenant
     {
-        public string TenantID { get; set; }
+        public string TenantId { get; set; }
     }
 }
