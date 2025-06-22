@@ -26,7 +26,6 @@ namespace TeachingPlatform.Back.Controllers.Authentications
 
             var roles = await userManager.GetRolesAsync(user);
             var token = jwtGenerator.Generate(user.Id, roles[0]);
-            Request.HttpContext.Session.SetString("token", token);
             return Ok(new { Token = token });
         }
         [HttpPost("register")]

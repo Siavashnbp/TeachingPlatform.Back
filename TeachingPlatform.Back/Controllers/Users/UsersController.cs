@@ -8,10 +8,10 @@ namespace TeachingPlatform.Back.Controllers.Users
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize]
-    public class UserController(IUserInfoReader userInfoReader,
+    public class UsersController(IUserInfoReader userInfoReader,
         IUserQuery query) : ControllerBase
     {
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
         public async Task<GetUserInfoResponseDto?> GetUserInfo()
         {
